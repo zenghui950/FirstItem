@@ -1,0 +1,39 @@
+UserModel={Account="zeng",Password="123"};
+
+UserList={};
+UserList.__index=UserList;
+function UserModel:new()
+
+local self={};
+
+setmetatable(self,UserList);
+
+return self;
+
+end
+
+table.insert(UserList,UserModel);
+
+
+UserModel.__index=UserModel;
+
+function UserModel:new(account,password)
+
+local self={};
+
+setmetatable(self,UserModel);
+
+self.Account=account;
+self.Password=password;
+
+return self;
+
+end
+
+
+function UserModel:SaveUser()
+
+
+
+
+end

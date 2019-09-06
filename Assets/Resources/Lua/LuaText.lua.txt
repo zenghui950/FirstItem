@@ -1,0 +1,8 @@
+print("Hello xlua");
+
+V=CS.UnityEngine.Vector3(1,1,1)
+print(V);
+
+CS.LuaText.TTTT();
+
+CS.LuaManager.Instance:TTT();

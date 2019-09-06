@@ -1,0 +1,28 @@
+print("Lua Test")
+
+
+a = 22
+
+
+d = {
+    f1 = 12, f2 = 34, 
+    add = function(a, b) 
+        print('d.add called')
+        return a + b, {name="Tom"}
+    end
+}
+
+function m()
+	print("不带参数的 m 方法")
+end
+
+function f(a,b)
+	print('a=',a,'b==',b) 
+	return 110, "呵呵", {name="Tom"}
+end
+
+LuaTest = {}
+
+function LuaTest:mm()
+
+end

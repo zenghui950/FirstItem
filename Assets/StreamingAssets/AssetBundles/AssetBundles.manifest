@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 2015426972
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: canvas.ab
+      Dependencies: {}
+    Info_1:
+      Name: cube.ab
+      Dependencies: {}

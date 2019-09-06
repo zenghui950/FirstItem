@@ -1,0 +1,316 @@
+ print("Game init......")
+
+-- ����AB����Դ������AB����Դ
+
+require 'UserModel'
+
+--JSON = require 'json'
+
+
+UnityEditor=CS.UnityEditor
+
+LuaGameInit = {}
+
+self=LuaGameInit;
+
+gameObject=CS.UnityEngine.GameObject;
+
+
+
+
+function LuaGameInit:init()
+
+
+	--local cube = CS.LuaManager.Instance:LoadAssetBundles("cube.ab","Cube");
+	--CS.UnityEngine.GameObject.Instantiate(cube)
+	--gameObject.Instantiate(cube);
+
+	filepath="D:\\unity5.6.5Project\\Xlua_learn\\Assets\\Resources\\User.txt";
+
+	local file=io.open(filepath,"a+");
+	io.input(file);
+	--io.output(file);
+	local jsonstr=io.read('*a');
+	--UserList = json.JsonMapper.ToObject(jsonstr);
+	--UserList=JSON:decode(jsonstr);
+
+
+
+
+-- ����c#����
+	local go = CS.LuaManager.Instance:LoadAssetBundles("canvas.ab","Canvas");
+	--ʵ���� �ҵ�Text  �ı� Text.text
+	canvas = CS.UnityEngine.GameObject.Instantiate(go) --ʵ����
+	local textObj = canvas.transform:Find('Txt_title') --�ҵ�Text
+	local gonggaoText = textObj:GetComponent(typeof(CS.UnityEngine.UI.Text)) --�ҵ�text���
+	gonggaoText.text = "Helle hui"
+
+	 panel_login=canvas.transform:Find('Panel_login').gameObject;
+	 panel_register=canvas.transform:Find('Panel_register').gameObject;
+
+	local LoginBtn_login=panel_login.transform:Find("LoginBtn_login"):GetComponent(typeof(CS.UnityEngine.UI.Button))
+	local LoginBtn_register=panel_login.transform:Find("LoginBtn_register"):GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+
+	local RegisterBtn_back=panel_register.transform:Find("RegisterBtn_back"):GetComponent(typeof(CS.UnityEngine.UI.Button))
+	local RegisterBtn_register=panel_register.transform:Find("RegisterBtn_register"):GetComponent(typeof(CS.UnityEngine.UI.Button))
+
+
+	LoginAccount_InputField=panel_login.transform:Find("Account_InputField"):GetComponent(typeof(CS.UnityEngine.UI.InputField))
+	--LoginPassword_InputField=panel_login.transform:Find("PasswordInputField"):GetComponent(typeof(CS.UnityEngine.UI.InputField))
+
+
+	RegisterAccount_InputField=panel_register.transform:Find("Account_InputField"):GetComponent(typeof(CS.UnityEngine.UI.InputField))
+	RegisterPassword_InputField=panel_register.transform:Find("PasswordInputField"):GetComponent(typeof(CS.UnityEngine.UI.InputField))
+	MakeSurePassword_InputField=panel_register.transform:Find("MakeSurePassword_InputField"):GetComponent(typeof(CS.UnityEngine.UI.InputField))
+
+end
+
+
+
+function start()
+
+--[[
+
+--��¼����ĵ�¼��ť
+	LoginBtn_login.onClick:AddListener(
+	function()
+
+	self:OnClickLoginBtn_login();
+
+	end)
+
+--��¼�����ע�ᰴť
+	LoginBtn_register.onClick:AddListener(
+	function()
+
+	self:OnClickLoginBtn_register();
+
+	end)
+
+--ע�����ķ��ذ�ť
+	RegisterBtn_back.onClick:AddListener(
+	function()
+
+	self:OnClickRegisterBtn_back();
+
+	end)
+
+
+--ע������ע�ᰴť
+	RegisterBtn_register.onClick:AddListener(
+	function()
+
+
+	self:OnClickRegisterBtn_register();
+
+
+	end)
+
+
+--]]
+
+end
+
+
+
+
+
+function update()
+
+
+
+
+end
+
+
+
+
+--�����¼����ĵ�¼��ť
+function LuaGameInit:OnClickLoginBtn_login()
+
+	if	LoginAccount_InputField.text=="" then
+
+	CS.UnityEngine.Debug.Log("please input account...");
+	return;
+
+	else if  LoginPassword_InputField.text==""  then
+
+	print("please input password...");
+	return;
+
+	end
+	end
+
+
+	local user=UserModel:new();
+	user.Account="";
+	user.Password="";
+
+
+
+	local bool isexists =false;--Ĭ������˺Ų����ڣ�������˺�û��ע��
+
+	for i=1, #UserList do
+
+	local tempuser=UserList[i];
+
+	if tempuser.Account==LoginAccount_InputField.text then
+	user=tempuser;
+
+
+	isexists=true;
+	break;
+
+	end
+	end
+
+	if not isexists then
+
+	print("The account does not exist");
+	return;
+
+	end
+
+	if user.Password~= LoginPassword_InputField.text then
+
+	print(" password is wrong");
+	return;
+
+	end
+
+
+--���浱ǰ�˺�
+
+	for i=1,#CurrentUser do
+	table.remove(CurrentUser,i);
+
+	end
+
+	table.insert(CurrentUser,user);
+
+	for i=1,# CurrentUser do
+	print(CurrentUser[i].Account..CurrentUser[i].Password);
+
+	end
+
+	print("Login Success:".."Account is "..user.Account.." , Password is "..user.Password)
+
+
+
+end
+
+
+--�����¼�����ע�ᰴť
+function LuaGameInit:OnClickLoginBtn_register()
+
+	panel_login:SetActive(false);
+	panel_register:SetActive(true);
+
+
+end
+
+
+--���ע�����ķ��ذ�ť
+function LuaGameInit:OnClickRegisterBtn_back()
+
+
+	panel_login:SetActive(true);
+	panel_register:SetActive(false);
+
+end
+
+
+--���ע������ע�ᰴť
+function LuaGameInit:OnClickRegisterBtn_register()
+
+	if	RegisterAccount_InputField.text=="" then
+
+
+	CS.UnityEngine.Debug.Log("please input account...");
+	return;
+
+	else if  RegisterPassword_InputField.text==""  then
+
+	print("please input password...");
+	return;
+
+	else if  MakeSurePassword_InputField.text==""  then
+
+	print("please sure password...");
+	return;
+
+	else if RegisterPassword_InputField.text~= MakeSurePassword_InputField.text  then
+
+	print("password is not");
+	return;
+
+	end
+	end
+	end
+	end
+
+
+--ʵ�����û�����
+	local user=UserModel:new();
+
+	user.Account=RegisterAccount_InputField.text;
+	user.Password=RegisterPassword_InputField.text;
+
+
+--�����û�����
+
+	local bool isFind = false;
+
+	for i=1, #UserList do
+
+	local tempuser=UserList[i];
+
+	if tempuser.Account==user.Account then
+
+	isFind=true;
+	break;
+
+	end
+	end
+
+	if not isFind then
+
+	table.insert(UserList,user);
+
+for i=1 ,#UserList do
+
+print(UserList[i].Account..UserList[i].Password);
+end
+
+
+
+	else
+	print("Account already exists");
+	return;
+	end
+
+--JsonMapper.ToJson()
+--JsonMapper.ToObject()
+
+
+--����Ϣд�뵽�ļ�
+	local file=io.open(filepath,"w");
+	--io.input(file);
+	io.output(file);
+
+
+	--local jsonstr = json.JsonMapper.ToJson(UserList);
+	local jsonstr =JSON:encode(UserList);
+
+	io.write(jsonstr);
+
+	--io.write(user.Account..","..user.Password.."|");
+
+	io.close(file);
+
+	UnityEditor.AssetDatabase.Refresh();--ˢ��Unity�༭��
+	print("Register Success:".."Account is "..user.Account.." , Password is "..user.Password)
+
+
+end
